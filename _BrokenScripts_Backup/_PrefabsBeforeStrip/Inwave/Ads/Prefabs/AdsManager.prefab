@@ -1,0 +1,138 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7007283998149537586
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7007283998149537599}
+  - component: {fileID: 7007283998149537584}
+  - component: {fileID: 7775864164745953345}
+  - component: {fileID: 5703717917940233928}
+  - component: {fileID: 9223230596747364853}
+  - component: {fileID: 2317024088395812776}
+  m_Layer: 0
+  m_Name: AdsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7007283998149537599
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7007283998149537586}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7007283998149537584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7007283998149537586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc9ab8d8f635342b29eb36be9ea53fb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enableAppOpenAd: 0
+  _appOpenAdNetwork: {fileID: 5703717917940233928}
+  _appOpenShowingInterval: 30
+  _maxTryAppOpenAd: 5
+  _admobImageInterstitial: {fileID: 0}
+  _enableBanner: 1
+  _bannerSize: 2
+  _bannerPosition: 1
+  _bannerCollapsible: {fileID: 2317024088395812776}
+  _enableBannerCollapsible: 0
+  _timeToSwitchToReplacement: 10
+  _useCustomReplacementPosition: 0
+  _replacementPosition: 1
+  _destroyCollapAfterClose: 0
+  _tryLoadInterstitialTime: 5
+  _enableMRecAd: 0
+  _mRecPosition: 1
+  _fakeIntersAdUnitIdAndroid: YOUR_AD_UNIT_ID
+  _fakeIntersAdUnitIdIOS: YOUR_AD_UNIT_ID
+  _enableFakeInterstitial: 0
+  _useTestId: 0
+  _tryLoadRewardedTime: 5
+  _rewardType: 0
+  adn: {fileID: 7775864164745953345}
+  _autoInitialize: 1
+--- !u!114 &7775864164745953345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7007283998149537586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0f9745fa4f9f0b43b2452a6ba045c00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _BannerStatus: 0
+  BannerLoaded: 0
+  _MRecStatus: 0
+  MRecLoaded: 0
+  MaxSdkKey: 271OPSDTMA4ToMTDdUFbby9ahocCCaZEhac51rZO0dto_P0dvFDUBM3u9g5LFeayEC2G1be2EWrDxrrq53IHQM
+  InterstitialAdUnitId: 3b05bcd86c822f82
+  RewardedAdUnitId: 753111cea4999dfa
+  BannerAdUnitId: 1bbfa71b22ea41d0
+  MRecAdUnitId: ENTER_MREC_AD_UNIT_ID_HERE
+--- !u!114 &5703717917940233928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7007283998149537586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d485cf82c82cbd441a375789bf267603, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AppOpenAdUnitId: a4741d69759e9ff9
+--- !u!114 &9223230596747364853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7007283998149537586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1fa59bf758e6b4d4595184c29e1183d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2317024088395812776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7007283998149537586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c9d1136d941c03459b44c3a51e7a76f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _useReplacementWhenFailed: 1
+  _adUnitIdAndroid: ca-app-pub-9380418410938917/4145905433
+  _adUnitIdIOS: YOUR_AD_UNIT_ID
+  _microValueRatio: 1000000
+  _useTestId: 0

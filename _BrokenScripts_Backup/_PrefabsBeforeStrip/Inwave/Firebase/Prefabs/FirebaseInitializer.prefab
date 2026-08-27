@@ -1,0 +1,541 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5167488798843447882
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5167488798843447924}
+  - component: {fileID: 5167488798843447925}
+  m_Layer: 0
+  m_Name: FirebaseInitializer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5167488798843447924
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5167488798843447882}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5167488799193310379}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5167488798843447925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5167488798843447882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a14dc4fa33531a45823af021b7718f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enableRemoteSync: 1
+--- !u!1 &5167488799193310382
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5167488799193310379}
+  - component: {fileID: 5167488799193310376}
+  - component: {fileID: 5167488799193310377}
+  - component: {fileID: 5120771785746030776}
+  m_Layer: 0
+  m_Name: SDK
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5167488799193310379
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5167488799193310382}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5167488798843447924}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5167488799193310376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5167488799193310382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87e909f8ef9d74ac5a2332d47318713c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _autoInitialization: 0
+--- !u!114 &5167488799193310377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5167488799193310382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b63ab8cb50b1f4c27943a7e2e14129a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5120771785746030776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5167488799193310382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 578dc06982057484187f1d3da8189165, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LifeConfig:
+    MaxLife: 5
+    CooldownSecs: 1200
+    PlayCost: 1
+    RefillPrice: 600
+  AdminTool: 1
+  GoldWins: 0a000000140000001e000000
+  LevelShowHome: 5
+  RevivePrice: 600
+  ExtraTimeRevive: 45
+  SmokeComboRequire: 5
+  ShinyBonusCombo: 1
+  ShinyBonusTime: 10
+  ShelfShuffleCount: 5
+  PiggyBankMax: 1500
+  PiggyBankMin: 1000
+  PiggyBankBonus: 100
+  SmokeDelayMin: 5
+  SmokeDelayMax: 10
+  MarinateSpeed: 0.33
+  OverheatDuration: 30
+  LevelSet: Levels
+  ElementUnlocks: 
+  AdsConfig:
+    Banner:
+      Enable: 1
+    Interstitial:
+      Enable: 1
+      Day: 1
+      Level: 6
+      Cooldown: 180
+  LevelListConfig:
+    Levels: []
+  ShopIAPConfig:
+    CoinFree:
+      Value: 80
+      Cooldown: 86400
+    Groups:
+    - Name: 
+      GroupType: 0
+      Packs:
+      - Id: com.food.sort.puzzle.starter_pack
+        Name: Starter Pack
+        Price: $2.99
+        PackType: 1
+        PackIcon: 0
+        Icon: 0
+        BuyLimited: 1
+        Rewards:
+        - Type: 0
+          Value: 2000
+          DurationSeconds: 0
+        - Type: 1
+          Value: 3600
+          DurationSeconds: 0
+        - Type: 3
+          Value: 1
+          DurationSeconds: 0
+        - Type: 4
+          Value: 1
+          DurationSeconds: 0
+        - Type: 5
+          Value: 1
+          DurationSeconds: 0
+        - Type: 6
+          Value: 1
+          DurationSeconds: 0
+      - Id: com.food.sort.puzzle.no_ads
+        Name: No Ads
+        Price: $7.99
+        PackType: 3
+        PackIcon: 0
+        Icon: 0
+        BuyLimited: 1
+        Rewards:
+        - Type: 0
+          Value: 2500
+          DurationSeconds: 0
+        - Type: 2
+          Value: 1
+          DurationSeconds: 0
+    - Name: Combo Pack
+      GroupType: 0
+      Packs:
+      - Id: com.food.sort.puzzle.normal_pack
+        Name: Normal Pack
+        Price: $2.99
+        PackType: 0
+        PackIcon: 0
+        Icon: 0
+        BuyLimited: 999
+        Rewards:
+        - Type: 0
+          Value: 1600
+          DurationSeconds: 0
+        - Type: 3
+          Value: 2
+          DurationSeconds: 0
+        - Type: 4
+          Value: 2
+          DurationSeconds: 0
+        - Type: 5
+          Value: 2
+          DurationSeconds: 0
+        - Type: 6
+          Value: 2
+          DurationSeconds: 0
+        - Type: 1
+          Value: 21600
+          DurationSeconds: 0
+      - Id: com.food.sort.puzzle.medium_pack
+        Name: Medium Pack
+        Price: $12.99
+        PackType: 0
+        PackIcon: 1
+        Icon: 0
+        BuyLimited: 999
+        Rewards:
+        - Type: 0
+          Value: 5500
+          DurationSeconds: 0
+        - Type: 3
+          Value: 4
+          DurationSeconds: 0
+        - Type: 4
+          Value: 4
+          DurationSeconds: 0
+        - Type: 5
+          Value: 4
+          DurationSeconds: 0
+        - Type: 6
+          Value: 4
+          DurationSeconds: 0
+        - Type: 1
+          Value: 43200
+          DurationSeconds: 0
+      - Id: com.food.sort.puzzle.large_pack
+        Name: Large Pack
+        Price: $24.99
+        PackType: 0
+        PackIcon: 2
+        Icon: 0
+        BuyLimited: 999
+        Rewards:
+        - Type: 0
+          Value: 12000
+          DurationSeconds: 0
+        - Type: 3
+          Value: 6
+          DurationSeconds: 0
+        - Type: 4
+          Value: 6
+          DurationSeconds: 0
+        - Type: 5
+          Value: 6
+          DurationSeconds: 0
+        - Type: 6
+          Value: 6
+          DurationSeconds: 0
+        - Type: 1
+          Value: 86400
+          DurationSeconds: 0
+    - Name: Coin Pack
+      GroupType: 1
+      Packs:
+      - Id: com.food.sort.puzzle.coin_pack_1
+        Name: Coin 1
+        Price: $1.99
+        PackType: 2
+        PackIcon: 0
+        Icon: 1
+        BuyLimited: 999
+        Rewards:
+        - Type: 0
+          Value: 1000
+          DurationSeconds: 0
+      - Id: com.food.sort.puzzle.coin_pack_2
+        Name: Coin 2
+        Price: $4.99
+        PackType: 2
+        PackIcon: 0
+        Icon: 2
+        BuyLimited: 999
+        Rewards:
+        - Type: 0
+          Value: 2500
+          DurationSeconds: 0
+      - Id: com.food.sort.puzzle.coin_pack_03
+        Name: Coin 3
+        Price: $9.99
+        PackType: 2
+        PackIcon: 0
+        Icon: 3
+        BuyLimited: 999
+        Rewards:
+        - Type: 0
+          Value: 5500
+          DurationSeconds: 0
+      - Id: com.food.sort.puzzle.coin_pack_04
+        Name: Coin 4
+        Price: $19.99
+        PackType: 2
+        PackIcon: 0
+        Icon: 4
+        BuyLimited: 999
+        Rewards:
+        - Type: 0
+          Value: 12000
+          DurationSeconds: 0
+      - Id: com.food.sort.puzzle.coin_pack_5
+        Name: Coin 5
+        Price: $39.99
+        PackType: 2
+        PackIcon: 0
+        Icon: 5
+        BuyLimited: 999
+        Rewards:
+        - Type: 0
+          Value: 25000
+          DurationSeconds: 0
+    - Name: World Tour Pack
+      GroupType: 0
+      Packs:
+      - Id: com.food.sort.puzzle.world_tour_pack
+        Name: World Tour Pack
+        Price: $2.99
+        PackType: 0
+        PackIcon: 0
+        Icon: 0
+        BuyLimited: 999
+        Rewards: []
+    - Name: Limited Pack
+      GroupType: 0
+      Packs:
+      - Id: com.food.sort.puzzle.limited_pack
+        Name: Limited Pack
+        Price: $4.99
+        PackType: 0
+        PackIcon: 0
+        Icon: 0
+        BuyLimited: 1
+        Rewards:
+        - Type: 0
+          Value: 4000
+          DurationSeconds: 0
+        - Type: 1
+          Value: 3600
+          DurationSeconds: 0
+        - Type: 3
+          Value: 1
+          DurationSeconds: 0
+        - Type: 4
+          Value: 1
+          DurationSeconds: 0
+        - Type: 5
+          Value: 1
+          DurationSeconds: 0
+        - Type: 6
+          Value: 1
+          DurationSeconds: 0
+        - Type: 11
+          Value: 1
+          DurationSeconds: 0
+        - Type: 10
+          Value: 1
+          DurationSeconds: 0
+    - Name: Remove Ads Bundle
+      GroupType: 0
+      Packs:
+      - Id: com.food.sort.puzzle.remove_ads_bundle
+        Name: Remove Ads Bundle
+        Price: $9.99
+        PackType: 3
+        PackIcon: 0
+        Icon: 0
+        BuyLimited: 1
+        Rewards:
+        - Type: 2
+          Value: 1
+          DurationSeconds: 0
+        - Type: 0
+          Value: 2000
+          DurationSeconds: 0
+        - Type: 1
+          Value: 2
+          DurationSeconds: 0
+        - Type: 3
+          Value: 2
+          DurationSeconds: 0
+        - Type: 4
+          Value: 2
+          DurationSeconds: 0
+        - Type: 5
+          Value: 2
+          DurationSeconds: 0
+        - Type: 6
+          Value: 2
+          DurationSeconds: 0
+    - Name: Ticket Pack
+      GroupType: 0
+      Packs:
+      - Id: com.food.sort.puzzle.ticket_pack_1
+        Name: Ticket Pack Small
+        Price: $0.99
+        PackType: 0
+        PackIcon: 0
+        Icon: 0
+        BuyLimited: 999
+        Rewards:
+        - Type: 8
+          Value: 10
+          DurationSeconds: 0
+      - Id: com.food.sort.puzzle.ticket_pack_2
+        Name: Ticket Pack Medium
+        Price: $1.99
+        PackType: 0
+        PackIcon: 0
+        Icon: 0
+        BuyLimited: 999
+        Rewards:
+        - Type: 8
+          Value: 25
+          DurationSeconds: 0
+      - Id: com.food.sort.puzzle.ticket_pack_3
+        Name: Ticket Pack Large
+        Price: $9.99
+        PackType: 0
+        PackIcon: 0
+        Icon: 0
+        BuyLimited: 999
+        Rewards:
+        - Type: 8
+          Value: 120
+          DurationSeconds: 0
+    PiggyBank:
+      Id: com.food.sort.puzzle.piggybank
+      Name: Piggy Bank
+      Price: $1.99
+      PackType: 0
+      PackIcon: 0
+      Icon: 0
+      BuyLimited: 0
+      Rewards:
+      - Type: 0
+        Value: 0
+        DurationSeconds: 0
+    LimitedPack:
+      Id: com.food.sort.puzzle.limited_pack
+      Name: Limited Pack
+      Price: $4.99
+      PackType: 0
+      PackIcon: 0
+      Icon: 0
+      BuyLimited: 1
+      Rewards:
+      - Type: 0
+        Value: 4000
+        DurationSeconds: 0
+      - Type: 1
+        Value: 3600
+        DurationSeconds: 0
+      - Type: 3
+        Value: 1
+        DurationSeconds: 0
+      - Type: 4
+        Value: 1
+        DurationSeconds: 0
+      - Type: 5
+        Value: 1
+        DurationSeconds: 0
+      - Type: 6
+        Value: 1
+        DurationSeconds: 0
+      - Type: 11
+        Value: 1
+        DurationSeconds: 0
+      - Type: 10
+        Value: 1
+        DurationSeconds: 0
+    WorldTour:
+      Id: com.food.sort.puzzle.world_tour_pack
+      Name: World Tour Pack
+      Price: $2.99
+      Icon: 0
+      TodayRewards:
+      - Type: 0
+        Value: 500
+        DurationSeconds: 0
+      - Type: 3
+        Value: 1
+        DurationSeconds: 0
+      - Type: 5
+        Value: 1
+        DurationSeconds: 0
+      Free1Rewards:
+      - Type: 4
+        Value: 1
+        DurationSeconds: 0
+      - Type: 6
+        Value: 1
+        DurationSeconds: 0
+      - Type: 5
+        Value: 1
+        DurationSeconds: 0
+      Free2Rewards:
+      - Type: 11
+        Value: 2
+        DurationSeconds: 0
+      - Type: 10
+        Value: 2
+        DurationSeconds: 0
+      - Type: 1
+        Value: 900
+        DurationSeconds: 0
+    Suggestion:
+      MinLevel: 11
+      LevelThreshold: 15
+      CooldownBeforeLevelThreshold: 180
+      CooldownAfterLevelThreshold: 90
+  EnablePopupRate: 1
+  MediationDataSegment: 
+  _autoInitialization: 0
