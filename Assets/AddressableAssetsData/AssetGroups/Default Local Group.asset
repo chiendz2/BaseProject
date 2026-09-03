@@ -14,7 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
   m_GroupName: Default Local Group
   m_GUID: 4bfefe75e8bd0d849b2fd6ba7bdcc026
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 1d10ecbc4cf0a994eac32eadb7427c86
+    m_Address: PopupTemplate
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1d676d998fbe2a74abfeb31cd48bb076
+    m_Address: PopupTicketShop
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a33db452c343d2844b9fea120786b6e3, type: 2}
   m_SchemaSet:

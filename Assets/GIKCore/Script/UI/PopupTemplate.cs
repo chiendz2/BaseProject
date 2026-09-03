@@ -10,11 +10,11 @@ namespace GIKCore
         [Tooltip("Optional. Wire a close button here and it is hooked up automatically.")]
         [SerializeField] private Button _closeButton;
 
-        public static bool IsShowing => UIManager.IsPopupOpen("PopupTemplate");
+        public static bool IsShowing => UIManager.IsPopupOpen(PopupId.PopupTemplate);
 
         public static void Show(Action<PopupTemplate> onLoaded = null)
         {
-            UIManager.ShowPopup("PopupTemplate", onLoaded);
+            UIManager.ShowPopup(PopupId.PopupTemplate, onLoaded);
         }
 
         public static void Hide()

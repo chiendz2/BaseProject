@@ -64,13 +64,18 @@ The single measure of good architecture here:
 ```
 Assets/
   GIKCore/                          ← shared core. Treat it as a library.
-    Scene/SplasSence.unity          ← the only scene, build index 0 (§3.8)
-    Prefab/                         ← Initialize, UIManager, UserDataManager, InitBG,
-                                       PopupTemplate, AdsManager, AdsManagerEventHandler,
-                                       AnalyticManager, Appsflyer, FirebaseInitializer,
-                                       GDPRManager
+    Scene/SplasSence.unity          ← entry scene, build index 0 (§3.7)
+    Scene/Home.unity                ← build index 1. Empty on purpose: the scene each game builds on
+    Prefab/                         ← Initialize, UIManager, UserDataManager, SceneLoader, InitBG,
+                                       PopupTemplate, FirebaseSDK, RemoteConfigService,
+                                       AppsFlyerManager, FacebookManager, GDPRManager, and the
+                                       empty placeholders AdsManager, AdsManagerEventHandler,
+                                       AnalyticManager, Appsflyer, FirebaseInitializer
     Script/                         ← every file is namespace `GIKCore` (§4)
-      SplashController.cs           ← splash timing + next-scene load (§3.7)
+      SplashController.cs           ← splash timing only, delegates loading to SceneLoader (§3.7)
+      SceneLoader.cs                ← THE scene-loading service. Nothing else calls LoadSceneAsync (§3.7)
+      PersistentRoot.cs             ← keeps the Initialize prefab alive across scene loads (§3.2)
+      SoundManager.cs               ← sfx + music, reads UserDataManager sound/music flags (§3.5)
       GDPRManager.cs                ← UMP consent, guarded by GOOGLE_MOBILE_ADS (§3.6)
       SystemTime.cs                 ← platform uptime, [DefaultExecutionOrder(-1)]
       AnimationId.cs                ← cached Animator hashes (§3.1)
@@ -87,13 +92,13 @@ Assets/
         UIManager.cs                ← popup stack, static facade, shared blocker (§3.4)
         PopupBase.cs                ← base class for every popup
         PopupTemplate.cs            ← the worked example to copy
-        PopupId.cs                  ← popup key constants (EMPTY today — §3.4)
+        PopupId.cs                  ← popup key constants. Holds PopupTemplate (§3.4)
         AddressablePrefabLoader.cs  ← the only Addressables entry point
         UIScaleToFillScreen.cs
     Editor/                         ← SdkDefineSynchronizer — auto sets/clears SDK defines (§3.6)
     Pool/                           ← reserved for pooling, empty today (§7.1)
     Textures/
-  AddressableAssetsData/            ← Addressables settings. 'Default Local Group' is EMPTY (§3.4)
+  AddressableAssetsData/            ← Addressables settings. 'Default Local Group' holds PopupTemplate (§3.4)
   Settings/                         ← URP pipeline + renderer assets
   Resources/                        ← DOTweenSettings.asset ONLY. Not a place for game assets (§0)
   InputSystem_Actions.inputactions
@@ -197,7 +202,9 @@ Packages/packages-lock.json
 
 ### 3.2 Managers, singletons & wiring — how this project really works
 
-- Bootstrapping is the **`Initialize` prefab** in `GIKCore/Prefab/`: it carries the persistent managers, which `DontDestroyOnLoad` themselves. That prefab is this project's composition root.
+- Bootstrapping is the **`Initialize` prefab** in `GIKCore/Prefab/`: it carries the persistent managers. That prefab is this project's composition root.
+- **`PersistentRoot` on the `Initialize` root is what keeps it alive** across scene loads, and it guards duplicates. A manager parked on a **child** of `Initialize` must not call `DontDestroyOnLoad` itself — Unity ignores that call on a non-root object, which is why `SoundManager` and `GDPRManager` rely on `PersistentRoot` instead. A manager that lives on its **own root prefab** (`UIManager`, `UserDataManager`, `SceneLoader`, `FirebaseSDK`, …) still calls `DontDestroyOnLoad` in its own `Awake`. See `Docs/adr/002`.
+- `Initialize` may exist **once** in the whole project. A second copy destroys itself, so never author a scene expecting its own private instance.
 - **`UIManager` and `UserDataManager` are deliberate singletons** (`Instance` + `DontDestroyOnLoad`), each shipped as its own prefab and dropped into the splash scene. These are accepted exceptions, **not** a licence to add more (§7.3).
   - A new singleton is allowed **only** if it is a process-wide service that must outlive scene loads (ads, analytics, consent, time, save data), it is placed in the splash scene as its own prefab, and it guards re-entry the way `UIManager.Awake` does (`Destroy(gameObject)` on a duplicate, `Instance = null` in `OnDestroy`).
   - **Gameplay code gets no singletons.** Use serialized references.
@@ -240,7 +247,7 @@ The popup system is `UIManager` + `PopupBase` + `AddressablePrefabLoader`. `Popu
 - The blocker is created in code, so it must inherit `_popupParent.gameObject.layer` — a `new GameObject` starts on `Default`, which `UICamera` (culling mask = `UI` only) does not render or raycast.
 
 **Rules** *(luật)*:
-- **`PopupId` constants only** — never a raw string at a call site. `PopupTemplate` currently passes the literal `"PopupTemplate"` because `PopupId` is still empty; the first popup added fixes that, template included.
+- **`PopupId` constants only** — never a raw string at a call site. `PopupTemplate` is the worked example end to end: constant in `PopupId`, prefab registered in `Default Local Group` under the address `PopupTemplate`, `Show`/`Hide`/`IsShowing` reading `PopupId.PopupTemplate`. Verified in Play mode — show, shared blocker landing at the sibling index directly below the popup, close, Addressables instance released.
 - All Addressables traffic goes through `AddressablePrefabLoader`. Never call `Addressables.InstantiateAsync` directly.
 - Never destroy a popup yourself. `Close()` → `Closed` → `UIManager.OnPopupClosed` → `AddressablePrefabLoader.Release`. `Destroy(popup.gameObject)` leaks the Addressables handle.
 - `Awake` in a popup must call `base.Awake()` — that is what hands the instance to `UIManager.RegisterAwakenedPopup`.
@@ -288,9 +295,10 @@ Any code touching an SDK that may not be installed (Ads, Firebase, AppsFlyer, IA
 
 ### 3.7 Scene flow
 
-- `GIKCore/Scene/SplasSence.unity` is the entry scene (build index 0) and currently the only scene. It carries `Main Camera`, `InitBG`, `Initialize`, `UIManager`, `UserDataManager`, `SplashController`.
-- `SplashController` holds the splash for `_minDisplaySeconds`, loads `_nextScene` in the background with `allowSceneActivation = false`, and activates only when both the timer and `progress >= 0.9` are satisfied. It counts time in `Update()` — **no coroutine** (§0).
-- Every persistent service enters the game through this scene. A new game scene must **not** add its own `AudioListener`: the persistent one lives on `UIManager/UICamera`.
+- `GIKCore/Scene/SplasSence.unity` is the entry scene (build index 0). It carries `Main Camera`, `Directional Light`, `Initialize`, `UIManager`, `UserDataManager`, `SceneLoader`, `SplashController`, `FirebaseSDK`, `RemoteConfigService`, `AppsFlyerManager`, `FacebookManager`.
+- `GIKCore/Scene/Home.unity` (build index 1) is deliberately **empty** — it is the scene each game builds its home screen on. `SplashController._nextScene` points at it.
+- **`SceneLoader` is the only thing that calls `SceneManager.LoadSceneAsync`.** It gates on `allowSceneActivation = false` until both a minimum duration and `progress >= 0.9` are met, counts time in `Update()` (**no coroutine**, §0), and finishes from `SceneManager.sceneLoaded` so `IsLoading` is already false by the time the new scene's `Start()` runs. `SplashController` only owns its own `_minDisplaySeconds` and calls `SceneLoader.Load(_nextScene, _minDisplaySeconds)`. Never write a second `LoadSceneAsync` (§7 litmus test, `Docs/adr/002`).
+- Every persistent service enters the game through this scene. A new game scene must **not** add its own `AudioListener`: the persistent one lives on `UIManager/UICamera`. It also needs no camera of its own for UI — `UIManager/UICamera` is `DontDestroyOnLoad` and survives every load.
 - UI input uses `InputSystemUIInputModule` on `UIManager/EventSystem`. Never reintroduce `StandaloneInputModule` — Player Settings runs Input System only, and the legacy module throws every frame.
 
 *(VN: `SplasSence` là scene khởi động duy nhất, chứa toàn bộ service sống xuyên scene. Scene game mới KHÔNG được thêm `AudioListener` — cái duy nhất nằm ở `UIManager/UICamera`. Input module phải là `InputSystemUIInputModule`.)*

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace GIKCore
 {
@@ -12,13 +11,7 @@ namespace GIKCore
         [Tooltip("Scene loaded after the splash. Must be in Build Settings. Leave empty to stay on the splash.")]
         [SerializeField] private string _nextScene;
 
-        private AsyncOperation _loadOperation;
-
-        private float _elapsedSeconds;
-
-        private bool _activated;
-
-        public float Progress => _loadOperation == null ? 0f : Mathf.Clamp01(_loadOperation.progress / 0.9f);
+        public float Progress => SceneLoader.Progress;
 
         private void Start()
         {
@@ -28,39 +21,7 @@ namespace GIKCore
                 return;
             }
 
-            _loadOperation = SceneManager.LoadSceneAsync(_nextScene);
-
-            if (_loadOperation == null)
-            {
-                Debug.LogError("[SplashController] Cannot load '" + _nextScene + "'. Add it to Build Settings.");
-                return;
-            }
-
-            _loadOperation.allowSceneActivation = false;
-            _loadOperation.completed += OnNextSceneLoaded;
-        }
-
-        private void Update()
-        {
-            if (_activated || _loadOperation == null)
-                return;
-
-            _elapsedSeconds += Time.unscaledDeltaTime;
-
-            if (_elapsedSeconds < _minDisplaySeconds)
-                return;
-
-            if (_loadOperation.progress < 0.9f)
-                return;
-
-            _activated = true;
-            _loadOperation.allowSceneActivation = true;
-        }
-
-        private void OnNextSceneLoaded(AsyncOperation operation)
-        {
-            operation.completed -= OnNextSceneLoaded;
-            _loadOperation = null;
+            SceneLoader.Load(_nextScene, _minDisplaySeconds);
         }
     }
 }
