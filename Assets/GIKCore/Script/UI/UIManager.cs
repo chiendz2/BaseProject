@@ -29,7 +29,7 @@ namespace GIKCore
 
         private static bool _isQuitting;
 
-        private static PopupBase _awakenedPopup;
+        private static readonly Dictionary<int, PopupBase> AwakenedPopups = new Dictionary<int, PopupBase>();
 
         public static UIManager Instance { get; private set; }
 
@@ -69,7 +69,7 @@ namespace GIKCore
             _isQuitting = true;
         }
 
-        private void OnDestroy()
+private void OnDestroy()
         {
             if (Instance != this)
                 return;
@@ -77,6 +77,7 @@ namespace GIKCore
             if (!_isQuitting)
                 DoCloseAllPopups();
 
+            AwakenedPopups.Clear();
             Instance = null;
         }
 
@@ -176,15 +177,34 @@ namespace GIKCore
                 Instance.DoCloseAllPopups();
         }
 
-        internal static void RegisterAwakenedPopup(PopupBase popup)
+internal static void RegisterAwakenedPopup(PopupBase popup)
         {
-            _awakenedPopup = popup;
+            if (popup == null)
+                return;
+
+            AwakenedPopups[popup.GetInstanceID()] = popup;
         }
 
-        private static PopupBase TakeAwakenedPopup(GameObject instance)
+internal static void UnregisterAwakenedPopup(PopupBase popup)
         {
-            var popup = _awakenedPopup;
-            _awakenedPopup = null;
+            if (popup == null)
+                return;
+
+            AwakenedPopups.Remove(popup.GetInstanceID());
+        }
+
+
+private static PopupBase TakeAwakenedPopup(GameObject instance)
+        {
+            if (instance == null)
+                return null;
+
+            int instanceId = instance.GetInstanceID();
+
+            if (!AwakenedPopups.TryGetValue(instanceId, out var popup))
+                return null;
+
+            AwakenedPopups.Remove(instanceId);
 
             if (popup != null && popup.gameObject == instance)
                 return popup;

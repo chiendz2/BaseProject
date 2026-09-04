@@ -78,11 +78,10 @@ namespace GIKCore
             if (Instance == null)
             {
                 Debug.LogError(LogTag + " No SceneLoader in the scene, cannot load '" + sceneName + "'.");
-                onLoaded?.Invoke();
                 return;
             }
 
-            Instance.DoLoad(sceneName, Instance._minLoadSeconds, onLoaded);
+            Instance.DoLoad(sceneName, Instance._minLoadSeconds, onLoaded, null);
         }
 
         public static void Load(string sceneName, float minSeconds, Action onLoaded = null)
@@ -90,33 +89,41 @@ namespace GIKCore
             if (Instance == null)
             {
                 Debug.LogError(LogTag + " No SceneLoader in the scene, cannot load '" + sceneName + "'.");
-                onLoaded?.Invoke();
                 return;
             }
 
-            Instance.DoLoad(sceneName, minSeconds, onLoaded);
+            Instance.DoLoad(sceneName, minSeconds, onLoaded, null);
         }
 
-        public static Task LoadAsync(string sceneName)
+public static Task LoadAsync(string sceneName)
         {
             var tcs = new TaskCompletionSource<bool>();
-            Load(sceneName, () => tcs.TrySetResult(true));
+
+            if (Instance == null)
+            {
+                tcs.TrySetException(new InvalidOperationException(LogTag + " No SceneLoader in the scene."));
+                return tcs.Task;
+            }
+
+            Instance.DoLoad(sceneName, Instance._minLoadSeconds, () => tcs.TrySetResult(true), error => tcs.TrySetException(new InvalidOperationException(error)));
             return tcs.Task;
         }
 
-        private void DoLoad(string sceneName, float minSeconds, Action onLoaded)
+private void DoLoad(string sceneName, float minSeconds, Action onLoaded, Action<string> onFailed)
         {
             if (string.IsNullOrEmpty(sceneName))
             {
-                Debug.LogError(LogTag + " Empty scene name.");
-                onLoaded?.Invoke();
+                string error = LogTag + " Empty scene name.";
+                Debug.LogError(error);
+                onFailed?.Invoke(error);
                 return;
             }
 
             if (_operation != null)
             {
-                Debug.LogError(LogTag + " Already loading '" + _pendingScene + "', ignoring '" + sceneName + "'.");
-                onLoaded?.Invoke();
+                string error = LogTag + " Already loading the requested scene, rejecting a second load.";;
+                Debug.LogError(error);
+                onFailed?.Invoke(error);
                 return;
             }
 
@@ -124,8 +131,9 @@ namespace GIKCore
 
             if (_operation == null)
             {
-                Debug.LogError(LogTag + " Cannot load '" + sceneName + "'. Add it to Build Settings.");
-                onLoaded?.Invoke();
+                string error = LogTag + " Cannot load '" + sceneName + "'. Add it to Build Settings.";
+                Debug.LogError(error);
+                onFailed?.Invoke(error);
                 return;
             }
 
@@ -139,7 +147,7 @@ namespace GIKCore
             LoadStarted?.Invoke(sceneName);
         }
 
-        private void Update()
+                private void Update()
         {
             if (_operation == null)
                 return;

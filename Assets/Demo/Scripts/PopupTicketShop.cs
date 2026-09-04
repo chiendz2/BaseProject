@@ -29,6 +29,9 @@ namespace Demo
 
         private bool _isFadingIn;
 
+        private UnityEngine.Events.UnityAction[] _packButtonActions;
+
+
         public event Action<int> PackSelected;
 
         public static bool IsShowing => UIManager.IsPopupOpen(DemoPopupId.PopupTicketShop);
@@ -46,17 +49,22 @@ namespace Demo
                 popup.Close();
         }
 
-        protected override void Awake()
+protected override void Awake()
         {
             base.Awake();
 
             _canvas = GetComponent<Canvas>();
             _group = GetComponent<CanvasGroup>();
+
+            if (_packButtons != null)
+                _packButtonActions = new UnityEngine.Events.UnityAction[_packButtons.Length];
         }
 
-        protected override void OnShow()
+protected override void OnShow()
         {
             _canvas.enabled = true;
+            _canvas.renderMode = RenderMode.ScreenSpaceCamera;
+            _canvas.worldCamera = UIManager.Instance == null ? null : UIManager.Instance.UICamera;
             _group.blocksRaycasts = true;
             _fadeElapsed = 0f;
             _isFadingIn = _fadeInSeconds > 0f;
@@ -79,8 +87,16 @@ namespace Demo
                     continue;
 
                 int index = i;
-                button.onClick.RemoveAllListeners();
-                button.onClick.AddListener(() => RaisePackSelected(index));
+                var action = _packButtonActions[i];
+
+                if (action == null)
+                {
+                    action = () => RaisePackSelected(index);
+                    _packButtonActions[i] = action;
+                }
+
+                button.onClick.RemoveListener(action);
+                button.onClick.AddListener(action);
             }
         }
 
@@ -101,7 +117,7 @@ namespace Demo
             _group.alpha = _fadeElapsed / _fadeInSeconds;
         }
 
-        protected override void OnClose()
+protected override void OnClose()
         {
             _isFadingIn = false;
             _group.blocksRaycasts = false;
@@ -109,12 +125,14 @@ namespace Demo
             if (_closeButton != null)
                 _closeButton.onClick.RemoveListener(Close);
 
-            if (_packButtons != null)
+            if (_packButtons != null && _packButtonActions != null)
             {
-                for (int i = 0; i < _packButtons.Length; i++)
+                int count = Mathf.Min(_packButtons.Length, _packButtonActions.Length);
+
+                for (int i = 0; i < count; i++)
                 {
-                    if (_packButtons[i] != null)
-                        _packButtons[i].onClick.RemoveAllListeners();
+                    if (_packButtons[i] != null && _packButtonActions[i] != null)
+                        _packButtons[i].onClick.RemoveListener(_packButtonActions[i]);
                 }
             }
 

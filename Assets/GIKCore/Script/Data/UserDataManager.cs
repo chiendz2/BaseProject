@@ -1,6 +1,5 @@
 using System;
 using System.Globalization;
-using TMPro;
 using UnityEngine;
 
 namespace GIKCore
@@ -8,7 +7,6 @@ namespace GIKCore
     [DefaultExecutionOrder(-100)]
     public class UserDataManager : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI m_txtTime;
         private const string SaveKey = "GIKCore.UserData";
 
         private static UserData _data;

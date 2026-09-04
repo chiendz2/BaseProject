@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GIKCore.SplashController
   _minDisplaySeconds: 1.5
-  _nextScene: Home
+  _nextScene: 
 --- !u!4 &394147642
 Transform:
   m_ObjectHideFlags: 0
