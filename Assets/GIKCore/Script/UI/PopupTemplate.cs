@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,9 +13,9 @@ namespace GIKCore
 
         public static bool IsShowing => UIManager.IsPopupOpen(PopupId.PopupTemplate);
 
-        public static void Show(Action<PopupTemplate> onLoaded = null)
+        public static Task<PopupTemplate> Show(Action<PopupTemplate> onLoaded = null)
         {
-            UIManager.ShowPopup(PopupId.PopupTemplate, onLoaded);
+            return UIManager.ShowPopup(PopupId.PopupTemplate, onLoaded);
         }
 
         public static void Hide()

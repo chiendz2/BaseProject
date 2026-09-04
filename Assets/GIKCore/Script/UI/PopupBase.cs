@@ -27,12 +27,12 @@ namespace GIKCore
 
         public RectTransform Rect => _rect;
 
-protected virtual void Awake()
+        protected virtual void Awake()
         {
             UIManager.RegisterAwakenedPopup(this);
         }
 
-protected virtual void OnDestroy()
+        protected virtual void OnDestroy()
         {
             UIManager.UnregisterAwakenedPopup(this);
         }

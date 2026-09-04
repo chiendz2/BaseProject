@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.antonysze.custom-play-button": "file:../FirebaseLib/unity-custom-play-button-main",
+    "com.besty.unity-skills": "https://github.com/Besty0728/Unity-Skills.git?path=/SkillsForUnity",
     "com.brunomikoski.animationsequencer": "file:../FirebaseLib/Animation-Sequencer-develop",
     "com.codewriter.tutorial-mask": "file:../FirebaseLib/TutorialMaskForUGUI-main",
     "com.coffee.ui-particle": "file:../FirebaseLib/ParticleEffectForUGUI-main",
@@ -58,5 +59,8 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  }
+  },
+  "testables": [
+    "com.besty.unity-skills"
+  ]
 }

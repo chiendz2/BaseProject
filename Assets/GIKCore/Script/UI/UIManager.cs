@@ -100,31 +100,50 @@ private void OnDestroy()
             return false;
         }
 
-        public static void ShowPopup(string popupName, Action<GameObject> onLoaded = null)
+        public static Task<GameObject> ShowPopup(string popupName, Action<GameObject> onLoaded = null)
         {
+            var tcs = new TaskCompletionSource<GameObject>();
+
             if (Instance == null)
             {
                 Debug.LogError("[UIManager] No instance in the scene, cannot show '" + popupName + "'.");
+                tcs.TrySetResult(null);
                 onLoaded?.Invoke(null);
-                return;
+                return tcs.Task;
             }
 
-            Instance.DoShowPopup(popupName, popup => onLoaded?.Invoke(popup == null ? null : popup.gameObject));
+            Instance.DoShowPopup(popupName, popup =>
+            {
+                var gameObject = popup == null ? null : popup.gameObject;
+                tcs.TrySetResult(gameObject);
+                onLoaded?.Invoke(gameObject);
+            });
+
+            return tcs.Task;
         }
 
-        public static void ShowPopup<T>(string popupName, Action<T> onLoaded = null) where T : PopupBase
+        public static Task<GameObject> ShowPopup(string popupName)
         {
+            return ShowPopup(popupName, (Action<GameObject>)null);
+        }
+
+        public static Task<T> ShowPopup<T>(string popupName, Action<T> onLoaded = null) where T : PopupBase
+        {
+            var tcs = new TaskCompletionSource<T>();
+
             if (Instance == null)
             {
                 Debug.LogError("[UIManager] No instance in the scene, cannot show '" + popupName + "'.");
+                tcs.TrySetResult(null);
                 onLoaded?.Invoke(null);
-                return;
+                return tcs.Task;
             }
 
             Instance.DoShowPopup(popupName, popup =>
             {
                 if (popup == null)
                 {
+                    tcs.TrySetResult(null);
                     onLoaded?.Invoke(null);
                     return;
                 }
@@ -135,26 +154,26 @@ private void OnDestroy()
                 {
                     Debug.LogError("[UIManager] Popup '" + popupName + "' has no " + typeof(T).Name + " on its root.");
                     ClosePopup(popup);
+                    tcs.TrySetResult(null);
                     onLoaded?.Invoke(null);
                     return;
                 }
 
+                tcs.TrySetResult(typed);
                 onLoaded?.Invoke(typed);
             });
+
+            return tcs.Task;
         }
 
         public static Task<GameObject> ShowPopupAsync(string popupName)
         {
-            var tcs = new TaskCompletionSource<GameObject>();
-            ShowPopup(popupName, go => tcs.TrySetResult(go));
-            return tcs.Task;
+            return ShowPopup(popupName);
         }
 
         public static Task<T> ShowPopupAsync<T>(string popupName) where T : PopupBase
         {
-            var tcs = new TaskCompletionSource<T>();
-            ShowPopup<T>(popupName, popup => tcs.TrySetResult(popup));
-            return tcs.Task;
+            return ShowPopup<T>(popupName);
         }
 
         public static void ClosePopup(PopupBase popup)
@@ -201,15 +220,20 @@ private static PopupBase TakeAwakenedPopup(GameObject instance)
 
             int instanceId = instance.GetInstanceID();
 
-            if (!AwakenedPopups.TryGetValue(instanceId, out var popup))
+            if (AwakenedPopups.TryGetValue(instanceId, out var popup))
+            {
+                AwakenedPopups.Remove(instanceId);
+
+                if (popup != null && popup.gameObject == instance)
+                    return popup;
+            }
+
+            var rootPopup = instance.GetComponent<PopupBase>();
+
+            if (rootPopup == null)
                 return null;
 
-            AwakenedPopups.Remove(instanceId);
-
-            if (popup != null && popup.gameObject == instance)
-                return popup;
-
-            return null;
+            return rootPopup;
         }
 
         private void CreateBlocker()
